@@ -1,16 +1,39 @@
 ﻿open Suave
 open Suave.Operators
 open Suave.Filters
-open Suave.Logging
 open Suave.WebSocket
+open Suave.Successful
+open Suave.RequestErrors
 
 open SimpleChatroom.ClientHandler
+open SimpleChatroom.RoomHandler
+open Newtonsoft.Json
+open Newtonsoft.Json.Serialization
+
+let JSON v =
+    let jsonSerializerSettings = new JsonSerializerSettings()
+    jsonSerializerSettings.ContractResolver 
+      <- new CamelCasePropertyNamesContractResolver()
+    JsonConvert.SerializeObject(v, jsonSerializerSettings)
+    |> OK
+    >=> Writers.setMimeType "application/json"
 
 let app : WebPart = 
   choose [
-    path "/websocket" >=> handShake handleMessage]
+    path "/websocket" >=> handShake handleMessage
+    GET >=> choose [
+        path "/rooms" >=> warbler (fun _ -> getRoomInfos() |> JSON)
+        ]
+    NOT_FOUND "Found no handlers."
+    ]
+
+let config = 
+    { 
+        defaultConfig 
+            with homeFolder = Some "wwwroot"
+    }
 
 [<EntryPoint>]
 let main _ =
-  startWebServer { defaultConfig with logger = Targets.create Verbose [||] } app
+  startWebServer defaultConfig app
   0

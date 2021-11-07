@@ -1,7 +1,5 @@
 <h1>SimpleChatRoom</h1>
-
-<input type="text" id="nameBox" placeholder="Type your name here" style="display: block; margin-bottom: 10px; padding: 10px;" />
-<input type="text" id="roomBox" placeholder="Type room here" style="display: block; margin-bottom: 10px; padding: 10px;" />
+<input type="text" id="roomBox" placeholder="Type room here" style="display: block; width: 100%; margin-bottom: 10px; padding: 10px;" />
 <button id="connect" title="Connect" style="height: 30px;">Connect</button>
 <button id="disconnect" title="Disconnect" style="height: 30px;">Disconnect</button>
 <pre id="messages" style="height: 400px; overflow: scroll"></pre>
@@ -11,7 +9,6 @@
 <script>
   (function() {
     const roomBox = document.querySelector('#roomBox')
-    const nameBox = document.querySelector('#nameBox')
     const disconnectBtn = document.querySelector('#disconnect')
     const connectBtn = document.querySelector('#connect')
     const sendBtn = document.querySelector('#send');
@@ -21,6 +18,7 @@
     let ws;
     let clientId;
     let roomId;
+    let nickName;
 
     function showMessage(rawData) {
       var reply = JSON.parse(rawData)
@@ -36,7 +34,7 @@
                 "ClientId": clientId,
                 "RoomId": roomBox.value,
                 "Action": "Leave",
-                "NickName": nameBox.value,
+                "NickName": "Nick",
                 "Content": ""
             }
             ws.send(JSON.stringify(message))
@@ -65,7 +63,7 @@
           "ClientId": clientId,
           "RoomId": roomBox.value,
           "Action": "Join",
-          "NickName": nameBox.value,
+          "NickName": "Nick",
           "Content": ""
         }
         ws.send(JSON.stringify(message))
@@ -101,7 +99,7 @@
             "ClientId": clientId,
             "RoomId": roomBox.value,
             "Action": "Broadcast",
-            "NickName": nameBox.value,
+            "NickName": "Nick",
             "Content": messageBox.value
         }
         
@@ -115,7 +113,7 @@
                 "ClientId": clientId,
                 "RoomId": roomBox.value,
                 "Action": "Leave",
-                "NickName": nameBox.value,
+                "NickName": "Nick",
                 "Content": ""
             }
         ws.send(JSON.stringify(message))
@@ -126,7 +124,7 @@
                 "ClientId": clientId,
                 "RoomId": roomBox.value,
                 "Action": "Leave",
-                "NickName": nameBox.value,
+                "NickName": "Nick",
                 "Content": ""
             }
         ws.send(JSON.stringify(message))

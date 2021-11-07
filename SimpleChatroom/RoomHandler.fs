@@ -2,11 +2,16 @@
 open System.Collections
 open Suave.WebSocket
 open Suave.Sockets
+open Suave.Http
 open FSharp.Json
 
 
 module RoomHandler = 
     let roomDict = Concurrent.ConcurrentDictionary<string, Concurrent.ConcurrentDictionary<string, WebSocket>>()
+
+    let getRoomInfos() = 
+        let infos = roomDict |> Seq.map(fun x -> {| Key = x.Key; Count = x.Value.Count |})
+        infos
 
     let joinRoom (room: Concurrent.ConcurrentDictionary<string, WebSocket>) (clientId:string) (webSocket:WebSocket) =
         room.TryAdd(clientId, webSocket) |> ignore
