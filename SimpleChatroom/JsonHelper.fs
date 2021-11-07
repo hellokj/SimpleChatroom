@@ -17,7 +17,7 @@ module JsonHelper =
             {
                 ClientId = String.Empty; 
                 RoomId = String.Empty;
-                NickName = String.Empty;  
+                NickName = String.Empty;
                 Content = String.Empty;
                 Action = None;
             }
