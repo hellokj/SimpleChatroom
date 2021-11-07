@@ -2,7 +2,6 @@
 open Suave
 open Suave.Operators
 open Suave.Successful
-
 open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
 open FSharp.Json
@@ -13,7 +12,7 @@ module JsonHelper =
         try
             let data = Json.deserialize<Message> msg
             data
-        with ex -> 
+        with _ -> 
             {
                 ClientId = String.Empty; 
                 RoomId = String.Empty;

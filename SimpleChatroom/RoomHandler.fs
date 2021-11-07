@@ -2,7 +2,6 @@
 open System.Collections
 open Suave.WebSocket
 open Suave.Sockets
-open Suave.Http
 open FSharp.Json
 
 
@@ -15,12 +14,12 @@ module RoomHandler =
 
     let joinRoom (room: Concurrent.ConcurrentDictionary<string, WebSocket>) (clientId:string) (webSocket:WebSocket) =
         room.TryAdd(clientId, webSocket) |> ignore
-        let clients = room.Values |> Seq.map(fun x -> x) |> Seq.toArray
+        let clients = room.Values |> Seq.toArray
         clients
 
     let leaveRoom (room: Concurrent.ConcurrentDictionary<string, WebSocket>) (clientId:string) (webSocket:WebSocket) =
         room.TryRemove(Generic.KeyValuePair<string, WebSocket>(clientId, webSocket)) |> ignore
-        let clients = room.Values |> Seq.map(fun x -> x) |> Seq.toArray
+        let clients = room.Values |> Seq.toArray
         clients
 
     let broadcast (from:string) (roomId:string) (content:string) (webSockets:WebSocket[]) = 
