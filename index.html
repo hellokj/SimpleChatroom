@@ -50,10 +50,10 @@
     }
 
     connectBtn.onclick = function() {
-    if (ws) {
+      if (ws) {
         ws.onerror = ws.onopen = ws.onclose = null;
         ws.close();
-    }
+      }
 
       ws = new WebSocket('ws://localhost:8080/websocket');
       ws.onopen = () => {
@@ -70,11 +70,11 @@
         }
         ws.send(JSON.stringify(message))
       }
-      ws.onmessage = ({data}) => { showMessage(data) };
-      ws.onclose = function() {
-        ws = null;
-      }
-      roomBox.readOnly = true
+        ws.onmessage = ({data}) => { showMessage(data) };
+        ws.onclose = function() {
+          ws = null;
+        }
+        roomBox.readOnly = true
     }
 
     function _uuid() {
@@ -89,10 +89,15 @@
         });
     }
 
+    function showErrorMessage(message){
+      messages.textContent += `\n\n${message}`;
+      messages.scrollTop = messages.scrollHeight;
+      messageBox.value = '';
+    }
 
     sendBtn.onclick = function() {
       if (!ws) {
-        showMessage("No WebSocket connection :(");
+        showErrorMessage("No WebSocket connection :(")
         return ;
       }else
       {
