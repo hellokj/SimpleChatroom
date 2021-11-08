@@ -1,10 +1,11 @@
 ﻿namespace SimpleChatroom
 open System.Collections
+open System
 open Suave.WebSocket
 open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.Http
-open JsonHelper
+open MessageHelper
 open RoomHandler
 
 module ClientHandler = 
@@ -17,7 +18,10 @@ module ClientHandler =
                 let! (opCode, data, _) = webSocket.read()
 
                 let message = UTF8.toString data |> deserializeMessage
-                let clientId = message.ClientId
+                let clientId = 
+                    match String.isEmpty message.ClientId with
+                    | true -> Guid.NewGuid().ToString()
+                    | false -> message.ClientId
 
                 let room = roomDict.GetOrAdd(message.RoomId, fun _ -> 
                     let newRoom = Concurrent.ConcurrentDictionary<string, WebSocket>()

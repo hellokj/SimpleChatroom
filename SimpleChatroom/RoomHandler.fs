@@ -23,7 +23,7 @@ module RoomHandler =
         clients
 
     let broadcast (from:string) (roomId:string) (content:string) (webSockets:WebSocket[]) = 
-        let reply = { FromId = from; RoomId = roomId; Content = content; Count = webSockets.Length }
+        let reply = { FromId = from; RoomId = roomId; Content = content; }
 
         let byteResponse =
           reply

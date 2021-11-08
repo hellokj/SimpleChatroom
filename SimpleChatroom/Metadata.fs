@@ -20,5 +20,4 @@ type Reply =
         FromId: string
         RoomId: string
         Content: string
-        Count: int
     }

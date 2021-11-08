@@ -11,8 +11,7 @@ open Newtonsoft.Json.Serialization
 
 let JSON v =
     let jsonSerializerSettings = JsonSerializerSettings()
-    jsonSerializerSettings.ContractResolver 
-      <- CamelCasePropertyNamesContractResolver()
+    jsonSerializerSettings.ContractResolver <- CamelCasePropertyNamesContractResolver()
     JsonConvert.SerializeObject(v, jsonSerializerSettings)
     |> OK
     >=> Writers.setMimeType "application/json"
