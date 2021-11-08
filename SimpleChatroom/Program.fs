@@ -26,6 +26,10 @@ let app : WebPart =
     NOT_FOUND "Found no handlers."
     ]
 
+let config = {
+        defaultConfig with bindings = [ HttpBinding.createSimple HTTP "127.0.0.1" 8081 ]
+    }
+
 [<EntryPoint>]
 let main _ =
   startWebServer defaultConfig app
