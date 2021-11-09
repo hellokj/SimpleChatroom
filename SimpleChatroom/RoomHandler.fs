@@ -4,8 +4,8 @@ open Suave.WebSocket
 open Suave.Sockets
 open FSharp.Json
 
-
 module RoomHandler = 
+        
     let roomDict = Concurrent.ConcurrentDictionary<string, Concurrent.ConcurrentDictionary<string, WebSocket>>()
     
     let getRoomInfos() = 
