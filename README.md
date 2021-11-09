@@ -23,7 +23,7 @@ dotnet run SimpleChatroom
 
 - **Metadata**
     Define the using type between server and client.
-- **JsonHelper**
+- **Helper**
     Helper module for retrieving the message from client.
 - **RoomHandler**
     Manage the room actions including join, leaving and broadcast the specific room.

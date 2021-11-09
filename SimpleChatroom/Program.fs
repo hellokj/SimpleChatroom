@@ -4,16 +4,14 @@ open Suave.Filters
 open Suave.WebSocket
 open Suave.Successful
 open Suave.RequestErrors
-
 open SimpleChatroom.ClientHandler
 open SimpleChatroom.RoomHandler
 open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
 
 let JSON v =
-    let jsonSerializerSettings = new JsonSerializerSettings()
-    jsonSerializerSettings.ContractResolver 
-      <- new CamelCasePropertyNamesContractResolver()
+    let jsonSerializerSettings = JsonSerializerSettings()
+    jsonSerializerSettings.ContractResolver <- CamelCasePropertyNamesContractResolver()
     JsonConvert.SerializeObject(v, jsonSerializerSettings)
     |> OK
     >=> Writers.setMimeType "application/json"
@@ -27,10 +25,8 @@ let app : WebPart =
     NOT_FOUND "Found no handlers."
     ]
 
-let config = 
-    { 
-        defaultConfig 
-            with homeFolder = Some "wwwroot"
+let config = {
+        defaultConfig with bindings = [ HttpBinding.createSimple HTTP "127.0.0.1" 8081 ]
     }
 
 [<EntryPoint>]

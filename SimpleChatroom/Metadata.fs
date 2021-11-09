@@ -17,8 +17,9 @@ type Message =
 
 type Reply = 
     {
+        IsFromSystem: bool
+        ClientId: string
         FromId: string
-        RoomId: string
+        From: string
         Content: string
-        Count: int
     }
