@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <Compile Include="Metadata.fs" />
-    <Compile Include="JsonHelper.fs" />
+    <Compile Include="Helper.fs" />
     <Compile Include="RoomHandler.fs" />
     <Compile Include="ClientHandler.fs" />
     <Compile Include="Program.fs" />

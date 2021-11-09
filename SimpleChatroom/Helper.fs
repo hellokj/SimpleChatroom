@@ -4,7 +4,7 @@ open Suave
 open FSharp.Json
 open System
 
-module MessageHelper = 
+module Helper = 
     let deserializeMessage msg = 
         try
             let data = Json.deserialize<Message> msg

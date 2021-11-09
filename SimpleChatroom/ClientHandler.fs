@@ -4,7 +4,7 @@ open Suave.WebSocket
 open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.Http
-open MessageHelper
+open Helper
 open RoomHandler
 
 module ClientHandler = 
