@@ -11,7 +11,7 @@ module Helper =
             data
         with _ -> 
             {
-                ClientId = Guid.NewGuid().ToString(); 
+                ClientId = String.Empty;
                 RoomId = String.Empty;
                 NickName = String.Empty;
                 Content = String.Empty;

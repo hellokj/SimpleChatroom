@@ -5,12 +5,15 @@ open Suave.Sockets
 open FSharp.Json
 
 type IRoomHandler = 
-    abstract member get : roomId:string -> Concurrent.ConcurrentDictionary<string, WebSocket>
-    abstract member join : roomId:string -> clientId:string -> clientSocket:WebSocket -> Generic.KeyValuePair<string, WebSocket>[]
-    abstract member leave : roomId:string -> clientId:string -> clientSocket:WebSocket -> Generic.KeyValuePair<string, WebSocket>[]
+    abstract member get : 
+        roomId:string -> Concurrent.ConcurrentDictionary<string, WebSocket>
+    abstract member join : 
+        roomId:string -> clientId:string -> clientSocket:WebSocket -> Generic.KeyValuePair<string, WebSocket>[]
+    abstract member leave : 
+        roomId:string -> clientId:string -> clientSocket:WebSocket -> Generic.KeyValuePair<string, WebSocket>[]
 
-    // may be get the dictionary from outer source
 type RoomHandler() =
+    // TODO : may get the dictionary from outer source
     let roomDict = Concurrent.ConcurrentDictionary<string, Concurrent.ConcurrentDictionary<string, WebSocket>>()
     
     member this.get(roomId:string) =
@@ -41,6 +44,9 @@ module SocketHandler =
 
     let leaveRoom (roomId:string) (clientId:string) (webSocket:WebSocket) =
         roomHandler.leave roomId clientId webSocket
+
+    let getRoomClients (roomId:string) =
+        roomHandler.get roomId |> Seq.map(fun x -> Generic.KeyValuePair<string, WebSocket>(x.Key, x.Value)) |> Seq.toArray
 
     let broadcast (isFromSystem: bool) (fromId:string) (from:string) (content:string) (pairs:Generic.KeyValuePair<string, WebSocket>[]) = 
         pairs

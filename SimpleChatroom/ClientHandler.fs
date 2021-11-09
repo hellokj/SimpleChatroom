@@ -5,10 +5,9 @@ open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.Http
 open Helper
-open RoomHandler
+open SocketHandler
 
 module ClientHandler = 
-    
     let handleMessage (webSocket : WebSocket) (context: HttpContext)= 
         socket {
             let mutable loop = true
