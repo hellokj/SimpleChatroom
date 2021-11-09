@@ -5,8 +5,38 @@ open Suave.Sockets
 open Suave.Http
 open FSharp.Json
 
+type IRoomHandler = 
+    abstract member get : roomId:string -> Concurrent.ConcurrentDictionary<string, WebSocket>
+    abstract member join : roomId:string -> clientId:string -> clientSocket:WebSocket -> Generic.KeyValuePair<string, WebSocket>[]
+    abstract member leave : roomId:string -> clientId:string -> clientSocket:WebSocket -> Generic.KeyValuePair<string, WebSocket>[]
 
-module RoomHandler = 
+    // may be get the dictionary from outer source
+type RoomHandler() =
+    let roomDict = Concurrent.ConcurrentDictionary<string, Concurrent.ConcurrentDictionary<string, WebSocket>>()
+    
+    member this.get(roomId:string) =
+        roomDict.GetOrAdd(roomId, fun _ -> Concurrent.ConcurrentDictionary<string, WebSocket>())
+
+    interface IRoomHandler with
+        member this.get (roomId:string) = 
+            roomDict.GetOrAdd(roomId, fun _ -> Concurrent.ConcurrentDictionary<string, WebSocket>())
+    
+        member this.join (roomId: string) (clientId:string) (webSocket:WebSocket) = 
+            let room = this.get roomId
+            room.TryAdd(clientId, webSocket) |> ignore
+            let clients = room |> Seq.map(fun x -> Generic.KeyValuePair<string, WebSocket>(x.Key, x.Value)) |> Seq.toArray
+            clients
+
+        member this.leave (roomId: string) (clientId:string) (webSocket:WebSocket) = 
+            let room = this.get roomId
+            room.TryRemove(Generic.KeyValuePair<string, WebSocket>(clientId, webSocket)) |> ignore
+            let clients = room |> Seq.map(fun x -> Generic.KeyValuePair<string, WebSocket>(x.Key, x.Value)) |> Seq.toArray
+            clients
+
+
+module SocketHandler = 
+    let private handler = RoomHandler() :> IRoomHandler
+
     let roomDict = Concurrent.ConcurrentDictionary<string, Concurrent.ConcurrentDictionary<string, WebSocket>>()
 
     let getRoomInfos() = 
