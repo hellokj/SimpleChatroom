@@ -17,8 +17,8 @@ type Message =
 
 type Reply = 
     {
-        IsFromSystem: bool
         ClientId: string
+        IsFromSystem: bool
         FromId: string
         From: string
         Content: string
