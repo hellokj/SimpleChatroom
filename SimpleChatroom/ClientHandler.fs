@@ -1,14 +1,16 @@
 ﻿namespace SimpleChatroom
 open System
+open System.Collections
 open Suave.WebSocket
 open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.Http
 open Helper
-open SocketHandler
+open RoomHandler
 
 module ClientHandler = 
-    let handleMessage (webSocket : WebSocket) (context: HttpContext)= 
+    let private roomHandler = RoomHandler() :> IRoomHandler
+    let handleMessage (webSocket : WebSocket) (_: HttpContext) = 
         socket {
             let mutable loop = true
 
@@ -25,22 +27,22 @@ module ClientHandler =
                 | Text -> 
                     match message.Action with
                     | Join -> 
-                        joinRoom message.RoomId clientId webSocket 
+                        roomHandler.join message.RoomId clientId webSocket 
                         |> 
                         broadcast true clientId message.NickName $"{message.NickName} join the room"
                         |> ignore
                     | Leave -> 
-                        leaveRoom message.RoomId clientId webSocket 
+                        roomHandler.leave message.RoomId clientId 
                         |> 
                         broadcast true clientId message.NickName $"{message.NickName} leaves the room"
                         |> ignore
                     | Broadcast -> 
-                        getRoomClients message.RoomId
+                        roomHandler.getClients message.RoomId |> Seq.toArray
                         |>
                         broadcast false clientId message.NickName message.Content |> ignore
                     | _ -> 0 |> ignore
                 | Close -> 
-                    leaveRoom message.RoomId clientId webSocket 
+                    roomHandler.leave message.RoomId clientId 
                     |> broadcast true clientId message.NickName $"{message.NickName} leaves the room"
                     |> ignore
                     let emptyResponse = [||] |> ByteSegment
