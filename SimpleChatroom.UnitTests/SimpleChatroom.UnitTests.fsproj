@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="ClientHandlerTest.fs" />
     <Compile Include="RoomHandlerTest.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

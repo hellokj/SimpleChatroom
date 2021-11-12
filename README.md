@@ -9,9 +9,9 @@ dotnet restore
 dotnet run SimpleChatroom
 ```
 
-### Testing page
+### Testing client project
 
-- index.html
+- https://github.com/hellokj/simple-chatroom-vue
 
 ### Dependency
 
