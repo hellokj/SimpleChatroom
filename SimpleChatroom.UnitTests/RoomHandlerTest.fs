@@ -1,6 +1,6 @@
 namespace SimpleChatroom.UnitTests
 
-module RoomHandlerTests =
+module RoomHandlerTest =
     open Xunit
     open Moq
     open System
@@ -69,5 +69,3 @@ module RoomHandlerTests =
         let clientId = "clientId"
         let roomHandler = RoomHandler() :> IRoomHandler
         Assert.Throws<Exception>(fun () -> roomHandler.leave roomId clientId |> ignore) |> ignore
-
-

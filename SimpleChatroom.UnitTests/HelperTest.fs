@@ -9,8 +9,8 @@ module HelperTest =
     open SimpleChatroom.Helper
 
     [<Fact>]
-    let ``deserializeMessage success messageWithClientData`` = 
-        let testMessage = { ClientId = "clientId"; RoomId = "roomId"; Action = It.IsAny<Action>(); NickName = It.IsAny<string>(); Content = It.IsAny<string>();}
+    let ``deserializeMessage success messageWithClientData``() = 
+        let testMessage = { ClientId = "clientId"; RoomId = "roomId"; Action = Action.None; NickName = It.IsAny<string>(); Content = It.IsAny<string>();}
         let serializedData = Json.serialize(testMessage)
 
         let message = deserializeMessage serializedData
@@ -18,7 +18,7 @@ module HelperTest =
         Assert.Equal(testMessage.ClientId, message.ClientId)
 
     [<Fact>]
-    let ``deserializeMessage wrongInput messageWithDefaultValue`` =
+    let ``deserializeMessage wrongInput messageWithDefaultValue``() =
         let wrongInput = String.Empty
         let message = deserializeMessage wrongInput
 

@@ -63,4 +63,3 @@ module RoomHandler =
         |> Async.Parallel
         |> Async.Ignore
         |> Async.RunSynchronously
-        |> ignore
