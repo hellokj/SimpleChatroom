@@ -43,9 +43,10 @@ module ClientHandler =
                         broadcast false clientId message.NickName message.Content |> ignore
                     | _ -> 0 |> ignore
                 | Close -> 
-                    roomHandler.leave message.RoomId clientId 
-                    |> broadcast true clientId message.NickName $"{message.NickName} leaves the room"
-                    |> ignore
+                    if (String.IsNullOrEmpty(message.RoomId) <> true) then 
+                        roomHandler.leave message.RoomId clientId 
+                        |> broadcast true clientId message.NickName $"{message.NickName} leaves the room"
+                        |> ignore
                     let emptyResponse = [||] |> ByteSegment
                     webSocket.send Close emptyResponse true |> ignore
                     loop <- false

@@ -16,7 +16,6 @@ module RoomHandler =
             
 
     type RoomHandler() =
-        // TODO : may get the dictionary from outer source
         let roomDict = Concurrent.ConcurrentDictionary<string, Concurrent.ConcurrentDictionary<string, WebSocket>>()
         
         member private this.add(roomId:string) = 
