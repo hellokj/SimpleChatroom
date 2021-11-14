@@ -3,6 +3,7 @@
 open Suave
 open FSharp.Json
 open System
+open Metadata
 
 module Helper = 
     let deserializeMessage msg = 

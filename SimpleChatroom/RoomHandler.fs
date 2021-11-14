@@ -3,6 +3,7 @@ open System.Collections
 open Suave.WebSocket
 open Suave.Sockets
 open FSharp.Json
+open Metadata
 
 module RoomHandler = 
     type IRoomHandler = 
@@ -63,5 +64,4 @@ module RoomHandler =
         |> Async.Parallel
         |> Async.Ignore
         |> Async.RunSynchronously
-        // TODO : deal with the fail socket operation
         |> ignore

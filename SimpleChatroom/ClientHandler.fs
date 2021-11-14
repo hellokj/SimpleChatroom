@@ -6,6 +6,7 @@ open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.Http
 open Helper
+open Metadata
 open RoomHandler
 
 module ClientHandler = 
@@ -26,17 +27,17 @@ module ClientHandler =
                 match opCode with
                 | Text -> 
                     match message.Action with
-                    | Join -> 
+                    | Action.Join -> 
                         roomHandler.join message.RoomId clientId webSocket 
                         |> 
                         broadcast true clientId message.NickName $"{message.NickName} join the room"
                         |> ignore
-                    | Leave -> 
+                    | Action.Leave -> 
                         roomHandler.leave message.RoomId clientId 
                         |> 
                         broadcast true clientId message.NickName $"{message.NickName} leaves the room"
                         |> ignore
-                    | Broadcast -> 
+                    | Action.Broadcast -> 
                         roomHandler.getClients message.RoomId |> Seq.toArray
                         |>
                         broadcast false clientId message.NickName message.Content |> ignore
